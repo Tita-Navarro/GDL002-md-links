@@ -3,7 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 
-function validatePath(mdFile) {
+module.exports = {
+    validatePath: function(mdFile) {
   const pathExtension = path.extname(mdFile);
   if (pathExtension == '.md') {
     console.log('Es un archivo .md');
@@ -12,12 +13,12 @@ function validatePath(mdFile) {
     console.log('Tu archivo no es .md');
     return false;
   }
-};
-function absolutePath(pathRoute) {
+},
+absolutePath: function(pathRoute) {
   const absolute = path.resolve(pathRoute);
     return absolute;
-};
-function readingFile(mdFile){
+},
+readingFile: function(mdFile){
     return new Promise((resolve, reject) =>{
         fs.readFile(mdFile, "utf-8", (err, data) => {
             if (err){
@@ -25,17 +26,27 @@ function readingFile(mdFile){
             }else{
                 resolve(data);
             }
-    })
+    });
 
-  })
+  });
+},
+
+fileExist: function(mdFile){
+    console.log(fileExist, mdFile);
+    return new Promise((resolve, reject)=>{
+        fs.existsSync(mdFile, function(exists){
+            if (exists){
+                console.log("the file exists");
+                resolve(true);
+            } else{
+                console.log("the file does not exist");
+                reject (false);
+            }
+        })
+    }) 
+},
+
 }
-
-
-module.exports = {
-  validatePath,
-  absolutePath,
-  readingFile
-};
 
 /*module.exports = {
     pathTrue: function (pathFile){
