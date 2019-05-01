@@ -2,19 +2,21 @@
 const fs = require('fs');
 //route
 const path = require('path');
-
+//read the html and substract the links
 const cheerio = require ('cheerio');
-
+//transform in html file
 const markdown = require ('markdown').markdown;
+//async functions
+const fetch = require ('node-fetch');
 
 module.exports = {
     validatePath: function(mdFile) {
   const pathExtension = path.extname(mdFile);
   if (pathExtension == '.md') {
-    console.log('Es un archivo .md');
+    console.log('It is a .md file');
     return true;
   } else {
-    console.log('Tu archivo no es .md');
+    console.log('Your file is not .md');
     return false;
   }
 },
@@ -23,10 +25,10 @@ fileExist: function(mdFile){
     return new Promise((resolve, reject)=>{
         fs.existsSync(mdFile, function(exists){
             if (exists){
-                console.log("the file exists");
+                console.log("The file exists");
                 resolve(true);
             } else{
-                console.log("the file does not exist");
+                console.log("The file does not exist");
                 reject (false);
             }
         })
@@ -49,22 +51,47 @@ readingFile: function(mdFile){
   });
  
 },
+
+isDirectory: function (pathFile){
+  try{
+    const stat = fs.lstatSync(pathFile);
+    return stat.isDirectory();
+  }catch(err){
+    return false;
+  }
+},
+
 htmlConverter: function (data, path){
     return fileHTML = markdown.toHTML(data);
 },
-arrays: function (fileHTML, path){
-let links = [],
-let link = {},
+arrays: function (fileHTML, pathFile){
+let arrayLink = [],
+var allLink= {},
 
-let $ = cheerio.load(fileHTML);
+var $ = cheerio.load(fileHTML);
 $('a').each(function(){
-  link = { href: $(this).attr('href'),
+  allLink = { href: $(this).attr('href'),
            text: $(this).text(),
-           file: path
+           file: pathFile
 },
-links.push(link);
+link.push(arrayLink);
 });
-return (links);
+return (allLink);
+},
+//Search links and if they exist put in array 
+linkExist: function (url) {
+  return fetch(url)
+    .then(resp => resp.text())
+    .then(link => {
+      link = link
+      return link;
+
+    })
+    .catch(error => {
+      error = false
+      return false;
+
+    });
 },
 }
 
