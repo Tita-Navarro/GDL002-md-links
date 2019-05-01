@@ -1,4 +1,4 @@
-const {validatePath, absolutePath, readingFile, fileExist} = require('../md-links.js');
+const {validatePath, absolutePath, readingFile, fileExist, directory} = require('../md-links.js');
 
 test('should be a markdown file', () =>{
   expect(validatePath("README.md")).toBe(true);
@@ -18,4 +18,8 @@ test ('file should exist', ()=>{
   fileExist("README.md").then(result =>{
     expect(result).toBe(true);
   })
+});
+
+test('should be "true" if the file is a directory',()=>{
+  expect(directory("C:\Users\tita_\Documents\proyecto-laboratoria\GDL002-social-network").toBe(true));
 });

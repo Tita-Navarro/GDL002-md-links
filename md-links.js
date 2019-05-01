@@ -2,6 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
+//const pathFile = process.argv[2];
+const fetch = require ('node-fetch');
 
 module.exports = {
     validatePath: function(mdFile) {
@@ -32,7 +34,7 @@ readingFile: function(mdFile){
 },
 
 fileExist: function(mdFile){
-    console.log(fileExist, mdFile);
+    //console.log(fileExist, mdFile);
     return new Promise((resolve, reject)=>{
         fs.existsSync(mdFile, function(exists){
             if (exists){
@@ -46,30 +48,47 @@ fileExist: function(mdFile){
     }) 
 },
 
+directory: function(path){
+  try{
+    const stat =fs.lstatSync(path);
+    return stat.isDirectory();
+  } catch (e){
+    return false;
+  }
+  },
+
+  linkArray: function(pathNew) {
+
+    console.log(pathNew + " nombre archivo");
+    
+    fs.readFile(pathNew,"utf-8",  (err, data) => {
+           if (err) {
+            reject(err);
+           }
+           {
+             console.log('enter');
+             
+          const toString= data.toString();
+          const RegExp1 = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
+          const RegExp2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
+    
+          const links = toString.match(RegExp1);
+          const arrayUrl = toString.match(RegExp2);
+    
+          for (let i=0; i< arrayUrl.length; i++) {
+            fetch(urlArray[i])
+            .then(response => {
+              if (response.status == 200) {
+                console.log(`Text: ${links[i]}\nLink: ${urlArray[i]}\nFile: ${pathNew}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
+              } else if (response.status == 404||response.status == 400) {
+                console.log(`ERROR.\nText: ${allLink[i]}\nLink: ${urlArray[i]}\nFile: ${pathNew}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
+              }
+            })
+          }
+        }
+     });
+  }
 }
 
-/*module.exports = {
-    pathTrue: function (pathFile){
-        if (pathFile!=undefined){
-            console.log('Ingresaste una ruta de archivo');
-            return true;
-        } else{
-            console.log('Ingresa una ruta');
-            return false;
-        }
-    },
-    //the file exists
-    existFile: function (pathFile){
-        return new Promise((resolve, reject)=>{
-            fs.existsSync(pathFile, function(exists){
-                if(exists){
-                    console.log('The file exists');
-                    resolve(true);
-                } else{
-                    console.log('the file does not exist');
-                    resolve(false);
-                }
-            });
-        })
-    },
-}*/
+
+
