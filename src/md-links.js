@@ -79,8 +79,8 @@ link.push(arrayLink);
 return (allLink);
 },
 //Search links and if they exist put in array 
-linkExist: function (url) {
-  return fetch(url)
+linkExist: function (urlLink) {
+  return fetch(urlLink)
     .then(resp => resp.text())
     .then(link => {
       link = link
@@ -92,6 +92,7 @@ linkExist: function (url) {
       return false;
 
     });
+    
 },
 }
 

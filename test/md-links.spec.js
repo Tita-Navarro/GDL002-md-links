@@ -1,4 +1,4 @@
-const mdLinks = require('../md-links.js');
+const mdLinks = require('../src/md-links.js');
 
 test('should be a markdown file', () =>{
   expect(mdLinks.validatePath("README.md")).toBe(true);
