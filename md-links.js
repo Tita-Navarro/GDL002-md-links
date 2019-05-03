@@ -1,94 +1,79 @@
 //file system
 
 const fs = require('fs');
-const path = require('path');
-//const pathFile = process.argv[2];
+const path = require('path'); 
 const fetch = require ('node-fetch');
 
-module.exports = {
-    validatePath: function(mdFile) {
-  const pathExtension = path.extname(mdFile);
-  if (pathExtension == '.md') {
-    console.log('Es un archivo .md');
-    return true;
-  } else {
-    console.log('Tu archivo no es .md');
-    return false;
+function validatingPath(pathRoute){
+  if(pathRoute != null){
+      return true;
+  } else{
+      console.log('Please enter your route');
+      return false;
   }
-},
-absolutePath: function(pathRoute) {
-  const absolute = path.resolve(pathRoute);
-    return absolute;
-},
-readingFile: function(mdFile){
-    return new Promise((resolve, reject) =>{
-        fs.readFile(mdFile, "utf-8", (err, data) => {
-            if (err){
-                reject(err);
-            }else{
-                resolve(data);
-            }
-    });
+};
 
-  });
-},
-
-fileExist: function(mdFile){
-    //console.log(fileExist, mdFile);
-    return new Promise((resolve, reject)=>{
-        fs.existsSync(mdFile, function(exists){
-            if (exists){
-                console.log("the file exists");
-                resolve(true);
-            } else{
-                console.log("the file does not exist");
-                reject (false);
-            }
-        })
-    }) 
-},
-
-directory: function(path){
-  try{
-    const stat =fs.lstatSync(path);
-    return stat.isDirectory();
-  } catch (e){
-    return false;
-  }
-  },
-
-  linkArray: function(pathNew) {
-
-    console.log(pathNew + " nombre archivo");
-    
-    fs.readFile(pathNew,"utf-8",  (err, data) => {
-           if (err) {
-            reject(err);
-           }
-           {
-             console.log('enter');
-             
-          const toString= data.toString();
-          const RegExp1 = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
-          const RegExp2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
-    
-          const links = toString.match(RegExp1);
-          const arrayUrl = toString.match(RegExp2);
-    
-          for (let i=0; i< arrayUrl.length; i++) {
-            fetch(urlArray[i])
-            .then(response => {
-              if (response.status == 200) {
-                console.log(`Text: ${links[i]}\nLink: ${urlArray[i]}\nFile: ${pathNew}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
-              } else if (response.status == 404||response.status == 400) {
-                console.log(`ERROR.\nText: ${allLink[i]}\nLink: ${urlArray[i]}\nFile: ${pathNew}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
-              }
-            })
-          }
-        }
-     });
-  }
+function absoluteOrRelative(pathRoute) {
+  absolutePathRoute=pathRoute;
+   if (path.isAbsolute(absolutePathRoute) === false){
+     return path.resolve(absolutePathRoute);
+    } if (path.isAbsolute(absolutePathRoute) === true) {
+     
+     return absolutePath;
+ }
 }
 
+function validatePath(pathRoute) {
+  if (pathExtension === undefined) {
+    return console.log('Enter a directory or file route');
+  } else {
+    const pathExtension = path.extname(pathRoute);
+  if (pathExtension == '.md') {
+    console.log('It is a .md file');
+    return true;
+  } else {
+    console.log('It is not a .md file');
+    return false;
+  }
+}
+}
 
+function fileExist (mdFile){
+  //console.log(fileExist, mdFile);
+  return new Promise((resolve, reject)=>{
+      fs.existsSync(mdFile, function(exists){
+          if (exists){
+              console.log("the file exists");
+              resolve(true);
+          } else{
+              console.log("the file does not exist");
+              reject (false);
+          }
+      });
+  }); 
+}  
 
+function dirOrFile(pathRoute) {
+  return new Promise((resolve, reject) => {
+    fs.stat(pathRoute, (err, routeStats) => {
+       if (err) {
+         if(err.code==='ENOENT'){
+           resolve(false);
+         
+      }else{
+        reject(err);
+      }
+    }
+      if (stats.isDirectory()) {
+        console.log('Your route is a directory');
+        return routeStats.isDirectory();
+      //   return true;
+      } 
+       else if (stats.isFile()) {
+        console.log('Your route is a file');
+        resolve(stats.isFile());
+      }
+    });
+  });
+}
+module.exports={validatingPath, absoluteOrRelative, validatePath, fileExist, dirOrFile}
