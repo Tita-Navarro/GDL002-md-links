@@ -52,6 +52,7 @@ readingFile: function(mdFile){
  
 },
 
+
 isDirectory: function (pathFile){
   try{
     const stat = fs.lstatSync(pathFile);
@@ -95,4 +96,3 @@ linkExist: function (urlLink) {
     
 },
 }
-
