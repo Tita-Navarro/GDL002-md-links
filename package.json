@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Tita-Navarro/GDL002-md-links#readme",
   "dependencies": {
+    "chalk": "^2.4.2",
     "jest": "^24.7.1"
   }
 }
-
