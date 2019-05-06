@@ -1,14 +1,13 @@
 //file system
 
 const fs = require('fs');
-const path = require('path'); 
-const fetch = require ('node-fetch');
+const path = require('path');
 const chalk= require('chalk');
 //enter the route of your file
 
 function validatingPath(validPath){
   if(validPath != null){
-    console.log(chalk.purple('☺ You enter a path succesfully'))
+    console.log(chalk.green('☺ You enter a path succesfully'))
       return true;
   } else{
       console.log(chalk.red('Please enter a path'));
@@ -23,17 +22,17 @@ function absoluteOrRelative(validPath) {
      return path.resolve(absolutePathRoute);
     } if (path.isAbsolute(absolutePathRoute) === true) {
      
-     return absolutePath;
+     return absolutePathRoute;
  }
 }
 //Validating if the file is a markdown file
 
 function validatePath(validPath) {
-  if (pathExtension === undefined) {
+  const pathExt = path.extname(validPath);
+  if (pathExt === undefined) {
     return console.log(chalk.white('Enter a directory or file route'));
   } else {
-    const pathExtension = path.extname(validPath);
-  if (pathExtension == '.md') {
+  if (pathExt == '.md') {
     //console.log('It is a .md file');
     return true;
   } else {
@@ -77,5 +76,6 @@ function dirOrFile(dirPath) {
     });
   });
 }
+
 
 module.exports={validatingPath, absoluteOrRelative, validatePath, fileExist, dirOrFile}
