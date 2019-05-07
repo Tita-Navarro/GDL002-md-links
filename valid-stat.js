@@ -26,33 +26,8 @@ function statusLinks(pathNew, validation = false) {
       console.log(chalk.green(' ✔ Total unique Links: ' + ' ' + uniqueUrl.length + '\n'));
 
       if (validation) {
-        validateStats(uniqueUrl, pathNew);
+       // validatingStatus(uniqueUrl, pathNew);
       }
-    }
-  });
-}
-
-function validatingLinks(pathNew) {
-  const url= fs.readFile(pathNew, 'utf-8', function(err, data) {
-    if (err) {
-      return console.log(err);
-    }
-    {
-      const toStr = data.toString();
-      // extrae el texto del link
-      const mdLinkRgEx = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
-      const mdLinkRgEx2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
-      // console.log('------READ FILE MD show validate---------');
-
-      const allLinks = toStr.match(mdLinkRgEx);
-      const urlArray = toStr.match(mdLinkRgEx2);
-      console.log(`File name: ${pathNew}\n`);
-      if (urlArray != null) {
-        for (let i = 0; i < urlArray.length; i++) {
-            console.log(`Text: ${allLinks[i]}\nLink: ${urlArray[i]}\nFile: ${pathNew}\n`);
-        }
-      }
-      
     }
   });
 }
@@ -83,4 +58,32 @@ function validatingStatus(urlArray, textStr, pathNew) {
       });
   }
 }
+
+
+function validatingLinks(pathNew) {
+  const url= fs.readFile(pathNew, 'utf-8', function(err, data) {
+    if (err) {
+      return console.log(err);
+    }
+    {
+      const toStr = data.toString();
+      // extrae el texto del link
+      const mdLinkRgEx = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
+      const mdLinkRgEx2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
+      // console.log('------READ FILE MD show validate---------');
+
+      const allLinks = toStr.match(mdLinkRgEx);
+      const urlArray = toStr.match(mdLinkRgEx2);
+      console.log(`File name: ${pathNew}\n`);
+      if (urlArray != null) {
+        for (let i = 0; i < urlArray.length; i++) {
+           // console.log(`Text: ${allLinks[i]}\nLink: ${urlArray[i]}\nFile: ${pathNew}\n`);
+        }
+      }
+      validatingStatus(urlArray, allLinks, pathNew)    
+    }
+  });
+}
+
+
 module.exports={statusLinks, validatingLinks, validatingStatus}
