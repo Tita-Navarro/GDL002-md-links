@@ -12,7 +12,7 @@ function statusLinks(pathNew, validation = false) {
     {
       // console.log('Show the stats');
       const toString = data.toString();
-      const regExp = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g; /*/https?:\/\/[\w\-\.]+\.\w{2,6}\/?\s/g*/
+      const regExp = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g; /*/https?:\/\/[\w\-\.]+\.\w{2,6}\/?\s/g;*/
       // extrae todo lo que hace match regexp con los url
       let url = toString.match(regExp);
       let uniqueUrl;
