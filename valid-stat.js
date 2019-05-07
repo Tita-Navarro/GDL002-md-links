@@ -32,7 +32,7 @@ function statusLinks(pathNew, validation = false) {
   });
 }
 
-function validatingLinks(pathNew, callback) {
+function validatingLinks(pathNew) {
   const url= fs.readFile(pathNew, 'utf-8', function(err, data) {
     if (err) {
       return console.log(err);
@@ -44,15 +44,17 @@ function validatingLinks(pathNew, callback) {
       const mdLinkRgEx2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
       // console.log('------READ FILE MD show validate---------');
 
-      const textStr = toStr.match(mdLinkRgEx);
+      const allLinks = toStr.match(mdLinkRgEx);
       const urlArray = toStr.match(mdLinkRgEx2);
       console.log(`File name: ${pathNew}\n`);
       if (urlArray != null) {
+        for (let i = 0; i < urlArray.length; i++) {
+            console.log(`Text: ${allLinks[i]}\nLink: ${urlArray[i]}\nFile: ${pathNew}\n`);
+        }
       }
-      callback(urlArray, textStr, pathNew);
+      
     }
   });
-  return url;
 }
 
 function validatingStatus(urlArray, textStr, pathNew) {
